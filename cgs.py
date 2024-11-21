@@ -32,7 +32,7 @@ def fetch_data():
             spread_percent = (spread / bid) * 100 if bid > 0 else 0
             
             # Fetch historical data for frequency and volume details (1-day interval)
-            hist_data = stock.history(period="7d", interval="1d")  # Last 7 days of data
+            hist_data = stock.history(period="1d", interval="1d")  # Last 7 days of data
             
             # Check if hist_data is empty or has missing values
             if not hist_data.empty:
