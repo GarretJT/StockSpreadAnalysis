@@ -69,7 +69,7 @@ st.dataframe(df)
 
 # Top 3 by Gain/Trade (%)
 st.write("### Top 3 Stocks by Gain/Trade (%)")
-st.table(df.nlargest(3, "Gain/Trade (%)"))
+st.table(df.nlargest(5, "Gain/Trade (%)"))
 
 # Visualization
 if not df.empty:
