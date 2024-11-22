@@ -7,7 +7,8 @@ import matplotlib.pyplot as plt
 st.title("Stock Spread Analysis")
 
 # Tickers List
-tickers = [
+# Updated ticker list
+new_tickers = [
     "CBUT", "RSGK", "TCID", "TRST", "ASBI", "MTLA", "ASRM", "SURE", "IDPR", "APII", 
     "PGLI", "ASJT", "BSIM", "LCKM", "MASB", "ALKA", "TIRA", "BBLD", "INPP", "INRU", 
     "RELI", "TGKA", "BBMD", "BBSI", "LIFE", "SMMA", "DUTI", "IPAC", "NICK", "APLI", 
@@ -21,8 +22,8 @@ tickers = [
     "LFLO", "BESS", "GDYR", "PDES", "IMJS", "ASDM", "OILS", "INCI", "SMMA"
 ]
 
-# Remove duplicates
-tickers = list(set(tickers))
+# Append `.JK` and remove duplicates
+tickers = list(set([ticker + ".JK" for ticker in new_tickers]))
 
 # Tick rules
 def calculate_tick(price):
