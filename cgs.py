@@ -47,7 +47,7 @@ def fetch_data():
             tick = calculate_tick(bid)
             real_spread = spread - (tick * 2)
             spread_percent = (real_spread / bid) * 100 if bid > 0 else 0
-            gain_trade = bid / real_spread if real_spread > 0 else None  # Gain/Trade (%)
+            gain_trade = real_spread / bid if bid > 0 else None  # Gain/Trade (%)
             
             spread_data.append({
                 "Ticker": ticker, 
@@ -67,20 +67,12 @@ df = fetch_data()
 st.write("### Spread Data with Gain/Trade (%)")
 st.dataframe(df)
 
-# Top 3 by Spread Percentage
-st.write("### Top 3 Stocks by Spread (%)")
-st.table(df.nlargest(3, "Spread (%)"))
+# Top 3 by Gain/Trade (%)
+st.write("### Top 3 Stocks by Gain/Trade (%)")
+st.table(df.nlargest(3, "Gain/Trade (%)"))
 
 # Visualization
 if not df.empty:
-    st.write("### Spread (%) Visualization")
-    fig, ax = plt.subplots()
-    df.plot.bar(x="Ticker", y="Spread (%)", ax=ax, color="orange", legend=False)
-    plt.title("Spread (%) per Ticker")
-    plt.xlabel("Ticker")
-    plt.ylabel("Spread (%)")
-    st.pyplot(fig)
-    
     st.write("### Gain/Trade (%) Visualization")
     fig, ax = plt.subplots()
     df.dropna().plot.bar(x="Ticker", y="Gain/Trade (%)", ax=ax, color="blue", legend=False)
