@@ -15,7 +15,7 @@ tickers = [
     "NICK.JK", "APLI.JK", "ATIC.JK", "SHIP.JK", "DCII.JK", "MEGA.JK", "YULE.JK", 
     "PTSP.JK", "TRUS.JK", "SAPX.JK", "DAYA.JK", "SKBM.JK", "EDGE.JK", "MERK.JK", 
     "TBMS.JK", "RANC.JK", "HDFA.JK", "GHON.JK", "SOTS.JK", "BINA.JK", "LINK.JK", 
-    "PURI.JK", "IFSH.JK", "SIPD.JK", "KINO.JK" , "MCAS.JK", "JECC.JK"
+    "PURI.JK", "IFSH.JK", "SIPD.JK"
 ]
 
 # Remove duplicates
@@ -47,7 +47,7 @@ def fetch_data():
             tick = calculate_tick(bid)
             real_spread = spread - (tick * 2)
             spread_percent = (real_spread / bid) * 100 if bid > 0 else 0
-            gain_trade = ((real_spread / bid)*100) if bid > 0 else None  # Gain/Trade (%)
+            gain_trade = real_spread / bid if bid > 0 else None  # Gain/Trade (%)
             
             spread_data.append({
                 "Ticker": ticker, 
@@ -69,7 +69,7 @@ st.dataframe(df)
 
 # Top 3 by Gain/Trade (%)
 st.write("### Top 3 Stocks by Gain/Trade (%)")
-st.table(df.nlargest(5, "Gain/Trade (%)"))
+st.table(df.nlargest(3, "Gain/Trade (%)"))
 
 # Visualization
 if not df.empty:
