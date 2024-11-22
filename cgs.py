@@ -15,7 +15,7 @@ tickers = [
     "NICK.JK", "APLI.JK", "ATIC.JK", "SHIP.JK", "DCII.JK", "MEGA.JK", "YULE.JK", 
     "PTSP.JK", "TRUS.JK", "SAPX.JK", "DAYA.JK", "SKBM.JK", "EDGE.JK", "MERK.JK", 
     "TBMS.JK", "RANC.JK", "HDFA.JK", "GHON.JK", "SOTS.JK", "BINA.JK", "LINK.JK", 
-    "PURI.JK", "IFSH.JK", "SIPD.JK", "KINO.JK" , "MCAS.JK"
+    "PURI.JK", "IFSH.JK", "SIPD.JK", "KINO.JK" , "MCAS.JK", "JECC.JK"
 ]
 
 # Remove duplicates
