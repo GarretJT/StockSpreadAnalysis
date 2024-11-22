@@ -47,7 +47,7 @@ def fetch_data():
             tick = calculate_tick(bid)
             real_spread = spread - (tick * 2)
             spread_percent = (real_spread / bid) * 100 if bid > 0 else 0
-            gain_trade = real_spread / bid if bid > 0 else None  # Gain/Trade (%)
+            gain_trade = ((real_spread / bid)*100) if bid > 0 else None  # Gain/Trade (%)
             
             spread_data.append({
                 "Ticker": ticker, 
