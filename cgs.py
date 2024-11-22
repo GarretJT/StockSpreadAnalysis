@@ -7,23 +7,20 @@ import matplotlib.pyplot as plt
 st.title("Stock Spread Analysis")
 
 # Tickers List
-# Updated ticker list
-new_tickers = [
-    "CBUT", "RSGK", "TCID", "TRST", "ASBI", "MTLA", "ASRM", "SURE", "IDPR", "APII", 
-    "PGLI", "ASJT", "BSIM", "LCKM", "MASB", "ALKA", "TIRA", "BBLD", "INPP", "INRU", 
-    "RELI", "TGKA", "BBMD", "BBSI", "LIFE", "SMMA", "DUTI", "IPAC", "NICK", "APLI", 
-    "ATIC", "SHIP", "DCII", "MEGA", "YULE", "PTSP", "TRUS", "SAPX", "DAYA", "SKBM", 
-    "EDGE", "MERK", "TBMS", "RANC", "HDFA", "GHON", "SOTS", "BINA", "LINK", "PURI", 
-    "IFSH", "SIPD", "HERO", "GEMA", "KEJU", "PNGO", "GLVA", "INDR", "BPFI", "BRAM", 
-    "SDRA", "ARGO", "MORA", "ALDO", "INTD", "POLU", "BINO", "MMLP", "LPLI", "BALI", 
-    "BOGA", "BUKK", "AMIN", "GMTD", "SHID", "BTON", "MPRO", "TALF", "CSAP", "TRUK", 
-    "JECC", "FUJI", "IKBI", "MICE", "BPII", "MGLV", "SGRO", "TRIS", "PEHA", "AMOR", 
-    "BMSR", "SKBM", "CASH", "BMHS", "SHIP", "CEKA", "BABY", "CINT", "SAFE", "GOLD", 
-    "LFLO", "BESS", "GDYR", "PDES", "IMJS", "ASDM", "OILS", "INCI", "SMMA"
+tickers = [
+    "CBUT.JK", "RSGK.JK", "TCID.JK", "TRST.JK", "ASBI.JK", "MTLA.JK", "ASRM.JK", "SURE.JK", "IDPR.JK", "APII.JK",
+    "PGLI.JK", "ASJT.JK", "BSIM.JK", "LCKM.JK", "MASB.JK", "ALKA.JK", "TIRA.JK", "BBLD.JK", "INPP.JK", "INRU.JK",
+    "RELI.JK", "TGKA.JK", "BBMD.JK", "BBSI.JK", "LIFE.JK", "SMMA.JK", "DUTI.JK", "IPAC.JK", "NICK.JK", "APLI.JK",
+    "ATIC.JK", "SHIP.JK", "DCII.JK", "MEGA.JK", "YULE.JK", "PTSP.JK", "TRUS.JK", "SAPX.JK", "DAYA.JK", "SKBM.JK",
+    "EDGE.JK", "MERK.JK", "TBMS.JK", "RANC.JK", "HDFA.JK", "GHON.JK", "SOTS.JK", "BINA.JK", "LINK.JK", "PURI.JK",
+    "IFSH.JK", "SIPD.JK", "HERO.JK", "GEMA.JK", "KEJU.JK", "PNGO.JK", "GLVA.JK", "INDR.JK", "BPFI.JK", "BRAM.JK",
+    "SDRA.JK", "ARGO.JK", "MORA.JK", "ALDO.JK", "INTD.JK", "POLU.JK", "BINO.JK", "MMLP.JK", "LPLI.JK", "BALI.JK",
+    "BOGA.JK", "BUKK.JK", "AMIN.JK", "GMTD.JK", "SHID.JK", "BTON.JK", "MPRO.JK", "TALF.JK", "CSAP.JK", "TRUK.JK",
+    "JECC.JK", "FUJI.JK", "IKBI.JK", "MICE.JK", "BPII.JK", "MGLV.JK", "SGRO.JK", "TRIS.JK", "PEHA.JK", "AMOR.JK",
+    "BMSR.JK", "SKBM.JK", "CASH.JK", "BMHS.JK", "SHIP.JK", "CEKA.JK", "BABY.JK", "CINT.JK", "SAFE.JK", "GOLD.JK",
+    "LFLO.JK", "BESS.JK", "GDYR.JK", "PDES.JK", "IMJS.JK", "ASDM.JK", "OILS.JK", "INCI.JK", "SMMA.JK"
 ]
 
-# Append `.JK` and remove duplicates
-tickers = list(set([ticker + ".JK" for ticker in new_tickers]))
 
 # Tick rules
 def calculate_tick(price):
