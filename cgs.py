@@ -8,14 +8,17 @@ st.title("Stock Spread Analysis")
 
 # Tickers List
 tickers = [
-    "CBUT.JK", "RSGK.JK", "TCID.JK", "TRST.JK", "ASBI.JK", "MTLA.JK", "ASRM.JK",
-    "SURE.JK", "IDPR.JK", "APII.JK", "PGLI.JK", "ASJT.JK", "BSIM.JK", "LCKM.JK",
-    "MASB.JK", "ALKA.JK", "TIRA.JK", "BBLD.JK", "INPP.JK", "INRU.JK", "RELI.JK",
-    "TGKA.JK", "BBMD.JK", "BBSI.JK", "LIFE.JK", "SMMA.JK", "DUTI.JK", "IPAC.JK", 
-    "NICK.JK", "APLI.JK", "ATIC.JK", "SHIP.JK", "DCII.JK", "MEGA.JK", "YULE.JK", 
-    "PTSP.JK", "TRUS.JK", "SAPX.JK", "DAYA.JK", "SKBM.JK", "EDGE.JK", "MERK.JK", 
-    "TBMS.JK", "RANC.JK", "HDFA.JK", "GHON.JK", "SOTS.JK", "BINA.JK", "LINK.JK", 
-    "PURI.JK", "IFSH.JK", "SIPD.JK", "ASBI.JK", "ATIC.JK"
+    "CBUT", "RSGK", "TCID", "TRST", "ASBI", "MTLA", "ASRM", "SURE", "IDPR", "APII", 
+    "PGLI", "ASJT", "BSIM", "LCKM", "MASB", "ALKA", "TIRA", "BBLD", "INPP", "INRU", 
+    "RELI", "TGKA", "BBMD", "BBSI", "LIFE", "SMMA", "DUTI", "IPAC", "NICK", "APLI", 
+    "ATIC", "SHIP", "DCII", "MEGA", "YULE", "PTSP", "TRUS", "SAPX", "DAYA", "SKBM", 
+    "EDGE", "MERK", "TBMS", "RANC", "HDFA", "GHON", "SOTS", "BINA", "LINK", "PURI", 
+    "IFSH", "SIPD", "HERO", "GEMA", "KEJU", "PNGO", "GLVA", "INDR", "BPFI", "BRAM", 
+    "SDRA", "ARGO", "MORA", "ALDO", "INTD", "POLU", "BINO", "MMLP", "LPLI", "BALI", 
+    "BOGA", "BUKK", "AMIN", "GMTD", "SHID", "BTON", "MPRO", "TALF", "CSAP", "TRUK", 
+    "JECC", "FUJI", "IKBI", "MICE", "BPII", "MGLV", "SGRO", "TRIS", "PEHA", "AMOR", 
+    "BMSR", "SKBM", "CASH", "BMHS", "SHIP", "CEKA", "BABY", "CINT", "SAFE", "GOLD", 
+    "LFLO", "BESS", "GDYR", "PDES", "IMJS", "ASDM", "OILS", "INCI", "SMMA"
 ]
 
 # Remove duplicates
