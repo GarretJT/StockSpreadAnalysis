@@ -2,26 +2,24 @@ import streamlit as st
 import yfinance as yf
 import pandas as pd
 import matplotlib.pyplot as plt
-import time
-import logging
 
 # Streamlit App Title
 st.title("Stock Spread Analysis")
 
 # Tickers List
 tickers = [
-    "CBUT.JK", "RSGK.JK", "TCID.JK", "TRST.JK", "ASBI.JK", "MTLA.JK", "ASRM.JK", "SURE.JK", "IDPR.JK", "APII.JK",
-    "PGLI.JK", "ASJT.JK", "BSIM.JK", "LCKM.JK", "MASB.JK", "ALKA.JK", "TIRA.JK", "BBLD.JK", "INPP.JK", "INRU.JK",
-    "RELI.JK", "TGKA.JK", "BBMD.JK", "BBSI.JK", "LIFE.JK", "SMMA.JK", "DUTI.JK", "IPAC.JK", "NICK.JK", "APLI.JK",
-    "ATIC.JK", "SHIP.JK", "DCII.JK", "MEGA.JK", "YULE.JK", "PTSP.JK", "TRUS.JK", "SAPX.JK", "DAYA.JK", "SKBM.JK",
-    "EDGE.JK", "MERK.JK", "TBMS.JK", "RANC.JK", "HDFA.JK", "GHON.JK", "SOTS.JK", "BINA.JK", "LINK.JK", "PURI.JK",
-    "IFSH.JK", "SIPD.JK", "HERO.JK", "GEMA.JK", "KEJU.JK", "PNGO.JK", "GLVA.JK", "INDR.JK", "BPFI.JK", "BRAM.JK",
-    "SDRA.JK", "ARGO.JK", "MORA.JK", "ALDO.JK", "INTD.JK", "POLU.JK", "BINO.JK", "MMLP.JK", "LPLI.JK", "BALI.JK",
-    "BOGA.JK", "BUKK.JK", "AMIN.JK", "GMTD.JK", "SHID.JK", "BTON.JK", "MPRO.JK", "TALF.JK", "CSAP.JK", "TRUK.JK",
-    "JECC.JK", "FUJI.JK", "IKBI.JK", "MICE.JK", "BPII.JK", "MGLV.JK", "SGRO.JK", "TRIS.JK", "PEHA.JK", "AMOR.JK",
-    "BMSR.JK", "SKBM.JK", "CASH.JK", "BMHS.JK", "SHIP.JK", "CEKA.JK", "BABY.JK", "CINT.JK", "SAFE.JK", "GOLD.JK",
-    "LFLO.JK", "BESS.JK", "GDYR.JK", "PDES.JK", "IMJS.JK", "ASDM.JK", "OILS.JK", "INCI.JK", "SMMA.JK"
+    "CBUT.JK", "RSGK.JK", "TCID.JK", "TRST.JK", "ASBI.JK", "MTLA.JK", "ASRM.JK",
+    "SURE.JK", "IDPR.JK", "APII.JK", "PGLI.JK", "ASJT.JK", "BSIM.JK", "LCKM.JK",
+    "MASB.JK", "ALKA.JK", "TIRA.JK", "BBLD.JK", "INPP.JK", "INRU.JK", "RELI.JK",
+    "TGKA.JK", "BBMD.JK", "BBSI.JK", "LIFE.JK", "SMMA.JK", "DUTI.JK", "IPAC.JK", 
+    "NICK.JK", "APLI.JK", "ATIC.JK", "SHIP.JK", "DCII.JK", "MEGA.JK", "YULE.JK", 
+    "PTSP.JK", "TRUS.JK", "SAPX.JK", "DAYA.JK", "SKBM.JK", "EDGE.JK", "MERK.JK", 
+    "TBMS.JK", "RANC.JK", "HDFA.JK", "GHON.JK", "SOTS.JK", "BINA.JK", "LINK.JK", 
+    "PURI.JK", "IFSH.JK", "SIPD.JK", "KINO.JK" , "MCAS.JK"
 ]
+
+# Remove duplicates
+tickers = list(set(tickers))
 
 # Tick rules
 def calculate_tick(price):
@@ -40,64 +38,50 @@ def calculate_tick(price):
 def fetch_data():
     spread_data = []
     for ticker in tickers:
-        try:
-            stock = yf.Ticker(ticker)
-            data = stock.info
-            bid = data.get("bid", 0)
-            ask = data.get("ask", 0)
-
-            if bid == 0 or ask == 0:  # Skip if bid or ask is missing
-                continue
-            
+        stock = yf.Ticker(ticker)
+        data = stock.info
+        bid, ask = data.get("bid"), data.get("ask")
+        
+        if bid and ask:
             spread = ask - bid
             tick = calculate_tick(bid)
             real_spread = spread - (tick * 2)
-            gain_trade = (real_spread / bid) * 100 if bid > 0 else None
+            spread_percent = (real_spread / bid) * 100 if bid > 0 else 0
+            gain_trade = ((real_spread / bid)*100) if bid > 0 else None  # Gain/Trade (%)
             
             spread_data.append({
-                "Ticker": ticker,
-                "Bid": bid,
-                "Ask": ask,
-                "Spread": spread,
-                "Real Spread": real_spread,
+                "Ticker": ticker, 
+                "Bid": bid, 
+                "Ask": ask, 
+                "Spread": spread, 
+                "Real Spread": real_spread, 
+                "Spread (%)": spread_percent,
                 "Gain/Trade (%)": gain_trade
             })
-            time.sleep(1)  # Delay to avoid rate limits
-        except Exception as e:
-            logging.error(f"Failed to fetch data for {ticker}: {e}")
-            continue  # Skip to the next ticker if there's an error
-
     return pd.DataFrame(spread_data)
 
 # Fetch data initially
 df = fetch_data()
 
 # Display data
-st.write("### Spread Data with Gain per Trade (%)")
-if not df.empty:
-    st.dataframe(df)
-else:
-    st.write("No data available. Check your tickers or try again later.")
+st.write("### Spread Data with Gain/Trade (%)")
+st.dataframe(df)
 
-# Top 5 by Gain per Trade (%)
-if not df.empty:
-    st.write("### Top 5 Stocks by Gain per Trade (%)")
-    st.table(df.nlargest(5, "Gain/Trade (%)"))
+# Top 3 by Gain/Trade (%)
+st.write("### Top 3 Stocks by Gain/Trade (%)")
+st.table(df.nlargest(5, "Gain/Trade (%)"))
 
 # Visualization
 if not df.empty:
-    st.write("### Gain per Trade (%) Visualization")
-    fig, ax = plt.subplots(figsize=(10, 6))
+    st.write("### Gain/Trade (%) Visualization")
+    fig, ax = plt.subplots()
     df.dropna().plot.bar(x="Ticker", y="Gain/Trade (%)", ax=ax, color="blue", legend=False)
-    plt.title("Gain per Trade (%) per Ticker")
+    plt.title("Gain/Trade (%) per Ticker")
     plt.xlabel("Ticker")
-    plt.ylabel("Gain per Trade (%)")
+    plt.ylabel("Gain/Trade (%)")
     st.pyplot(fig)
 
 # Refresh button
 if st.button("Refresh Data"):
     df = fetch_data()
-    if not df.empty:
-        st.dataframe(df)
-    else:
-        st.write("No data available after refreshing.")
+    st.dataframe(df)
