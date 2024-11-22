@@ -15,7 +15,7 @@ tickers = [
     "NICK.JK", "APLI.JK", "ATIC.JK", "SHIP.JK", "DCII.JK", "MEGA.JK", "YULE.JK", 
     "PTSP.JK", "TRUS.JK", "SAPX.JK", "DAYA.JK", "SKBM.JK", "EDGE.JK", "MERK.JK", 
     "TBMS.JK", "RANC.JK", "HDFA.JK", "GHON.JK", "SOTS.JK", "BINA.JK", "LINK.JK", 
-    "PURI.JK", "IFSH.JK", "SIPD.JK", "KINO.JK" , "MCAS.JK"
+    "PURI.JK", "IFSH.JK", "SIPD.JK", "KINO.JK", "MCAS.JK"
 ]
 
 # Remove duplicates
@@ -60,28 +60,19 @@ def fetch_data():
             })
     return pd.DataFrame(spread_data)
 
+# Highlighting Function
+def highlight_gain(data, column):
+    return [
+        "background-color: lightgreen" if val > 5 else "background-color: lightcoral" 
+        if val < 1 else "" for val in data[column]
+    ]
+
 # Fetch data initially
 df = fetch_data()
 
 # Display data
 st.write("### Spread Data with Gain/Trade (%)")
-st.dataframe(df)
-
-# Top 3 by Gain/Trade (%)
-st.write("### Top 3 Stocks by Gain/Trade (%)")
-st.table(df.nlargest(5, "Gain/Trade (%)"))
-
-# Visualization
 if not df.empty:
-    st.write("### Gain/Trade (%) Visualization")
-    fig, ax = plt.subplots()
-    df.dropna().plot.bar(x="Ticker", y="Gain/Trade (%)", ax=ax, color="blue", legend=False)
-    plt.title("Gain/Trade (%) per Ticker")
-    plt.xlabel("Ticker")
-    plt.ylabel("Gain/Trade (%)")
-    st.pyplot(fig)
-
-# Refresh button
-if st.button("Refresh Data"):
-    df = fetch_data()
-    st.dataframe(df)
+    # Apply highlights
+    styled_df = df.style.apply(highlight_gain, column="Gain/Trade (%)", subset=["Gain/Trade (%)"])
+   
