@@ -66,8 +66,8 @@ st.write("### Spread Data with Gain per Trade (%)")
 st.dataframe(df)
 
 # Top 3 by Gain per Trade (%)
-st.write("### Top 3 Stocks by Gain per Trade (%)")
-st.table(df.nlargest(3, "Gain/Trade (%)"))
+st.write("### Top 5 Stocks by Gain per Trade (%)")
+st.table(df.nlargest(5, "Gain/Trade (%)"))
 
 # Visualization
 if not df.empty:
