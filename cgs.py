@@ -56,25 +56,29 @@ def fetch_data():
     spread_data = []
     for ticker in tickers:
         stock = yf.Ticker(ticker)
-        data = stock.info
-        bid, ask = data.get("bid"), data.get("ask")
-
-        if bid and ask:
-            spread = ask - bid
-            tick = calculate_tick(bid)
-            real_spread = spread - (tick * 2)
-            spread_percent = (real_spread / bid) * 100 if bid > 0 else 0
-            gain_trade = (real_spread / bid) * 100 if bid > 0 else 0
-
-            spread_data.append({
-                "Ticker": ticker, 
-                "Bid": bid, 
-                "Ask": ask, 
-                "Spread": spread, 
-                "Real Spread": real_spread, 
-                "Spread (%)": spread_percent,
-                "Gain/Trade (%)": gain_trade
-            })
+        try:
+            data = stock.info
+            bid, ask = data.get("bid"), data.get("ask")
+            
+            if bid and ask:
+                spread = ask - bid
+                tick = calculate_tick(bid)
+                real_spread = spread - (tick * 2)
+                spread_percent = (real_spread / bid) * 100 if bid > 0 else 0
+                gain_trade = (real_spread / bid) * 100 if bid > 0 else 0
+                
+                spread_data.append({
+                    "Ticker": ticker, 
+                    "Bid": bid, 
+                    "Ask": ask, 
+                    "Spread": spread, 
+                    "Real Spread": real_spread, 
+                    "Spread (%)": spread_percent,
+                    "Gain/Trade (%)": gain_trade
+                })
+        except Exception as e:
+            print(f"Error fetching data for {ticker}: {e}")
+            
     return pd.DataFrame(spread_data)
 
 # Fetch data initially
@@ -86,7 +90,7 @@ st.dataframe(df)
 
 # Top 3 by Gain/Trade (%)
 st.write("### Top 3 Stocks by Gain/Trade (%)")
-st.table(df.nlargest(3, "Gain/Trade (%)"))
+st.table(df.nlargest(5, "Gain/Trade (%)"))
 
 # Visualization
 if not df.empty:
