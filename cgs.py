@@ -51,11 +51,16 @@ def fetch_data():
                     "Spread (%)": spread_percent,
                     "Gain/Trade (%)": gain_trade
                 })
+            
+            # Sleep for 1 second between requests to avoid rate limiting
+            time.sleep(1)  # Adjust the delay time based on your needs
+
         except Exception as e:
             print(f"Error fetching data for {ticker}: {e}")
+            # You can also add a longer sleep time if you get rate limit errors
+            time.sleep(5)  # Increased sleep on error to be more cautious
             
     return pd.DataFrame(spread_data)
-
 # Fetch data initially
 df = fetch_data()
 
