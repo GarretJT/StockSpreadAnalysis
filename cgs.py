@@ -1,13 +1,12 @@
 import streamlit as st
 import yfinance as yf
 import pandas as pd
-import time
-import random
+import matplotlib.pyplot as plt
 
 # Streamlit App Title
 st.title("Stock Spread Analysis")
 
-# Tickers List (example, you can add your full list of tickers)
+# Tickers List
 tickers = [
     "CBUT.JK", "RSGK.JK", "TCID.JK", "TRST.JK", "ASBI.JK", "MTLA.JK", "ASRM.JK",
     "SURE.JK", "IDPR.JK", "APII.JK", "PGLI.JK", "ASJT.JK", "BSIM.JK", "LCKM.JK",
@@ -16,7 +15,23 @@ tickers = [
     "NICK.JK", "APLI.JK", "ATIC.JK", "SHIP.JK", "DCII.JK", "MEGA.JK", "YULE.JK", 
     "PTSP.JK", "TRUS.JK", "SAPX.JK", "DAYA.JK", "SKBM.JK", "EDGE.JK", "MERK.JK", 
     "TBMS.JK", "RANC.JK", "HDFA.JK", "GHON.JK", "SOTS.JK", "BINA.JK", "LINK.JK", 
-    "PURI.JK", "IFSH.JK", "SIPD.JK", "KINO.JK", "MCAS.JK"
+    "PURI.JK", "IFSH.JK", "SIPD.JK", "KINO.JK", "MCAS.JK", "INRU.JK", "CBUT.JK", 
+    "APII.JK", "ASRM.JK", "GHON.JK", "HERO.JK", "LCKM.JK", "RELI.JK", "TIRA.JK", 
+    "TCID.JK", "TGKA.JK", "MASB.JK", "TGKA.JK", "BBMD.JK", "GEMA.JK", "BBLD.JK", 
+    "RSGK.JK", "BBSI.JK", "KEJU.JK", "TRST.JK", "PNGO.JK", "LIFE.JK", "LINK.JK", 
+    "PGLI.JK", "GLVA.JK", "INDR.JK", "BPFI.JK", "BRAM.JK", "SOTS.JK", "SDRA.JK", 
+    "ASJT.JK", "ARGO.JK", "MORA.JK", "ALDO.JK", "INTD.JK", "POLU.JK", "BINO.JK", 
+    "MMLP.JK", "LPLI.JK", "BALI.JK", "BOGA.JK", "MTLA.JK", "BUKK.JK", "AMIN.JK", 
+    "GMTD.JK", "SHID.JK", "BTON.JK", "BBLD.JK", "APLI.JK", "NICK.JK", "MPRO.JK", 
+    "TALF.JK", "CSAP.JK", "TRUK.JK", "IPAC.JK", "JECC.JK", "FUJI.JK", "IKBI.JK", 
+    "MICE.JK", "BPII.JK", "LCKM.JK", "MGLV.JK", "SGRO.JK", "TRIS.JK", "KEJU.JK", 
+    "PEHA.JK", "AMOR.JK", "BMSR.JK", "TIRA.JK", "SKBM.JK", "SURE.JK", "BSIM.JK", 
+    "ALKA.JK", "LINK.JK", "EDGE.JK", "MRAT.JK", "SCNP.JK", "DEPO.JK", "CASH.JK", 
+    "BMHS.JK", "INPP.JK", "BBSS.JK", "AGAR.JK", "BINA.JK", "SHIP.JK", "CEKA.JK", 
+    "AMFG.JK", "BABY.JK", "CINT.JK", "IDPR.JK", "HDFA.JK", "GOLD.JK", "IFSH.JK", 
+    "SAFE.JK", "DAYA.JK", "INAI.JK", "ASBI.JK", "PTSP.JK", "SHIP.JK", "SIPD.JK", 
+    "TBMS.JK", "LFLO.JK", "BESS.JK", "RANC.JK", "GDYR.JK", "LCKM.JK", "PDES.JK", 
+    "IMJS.JK", "ASDM.JK", "OILS.JK", "TRUS.JK", "INCI.JK", "SMMA.JK"
 ]
 
 # Remove duplicates
@@ -35,52 +50,30 @@ def calculate_tick(price):
     else:
         return 25
 
-# Fetch data with delay and retry logic
-@st.cache_data  # Caching the function to reduce repeated API calls
+# Fetch data
 def fetch_data():
     spread_data = []
-    batch_size = 50  # Smaller batch size to avoid overloading the server
-    retries = 3  # Number of retry attempts if 429 error occurs
-    for i in range(0, len(tickers), batch_size):
-        batch = tickers[i:i + batch_size]
-        for ticker in batch:
-            for attempt in range(retries):
-                try:
-                    stock = yf.Ticker(ticker)
-                    data = stock.info
-                    bid, ask = data.get("bid"), data.get("ask")
+    for ticker in tickers:
+        stock = yf.Ticker(ticker)
+        data = stock.info
+        bid, ask = data.get("bid"), data.get("ask")
 
-                    if bid and ask:
-                        spread = ask - bid
-                        tick = calculate_tick(bid)
-                        real_spread = spread - (tick * 2)
-                        spread_percent = (real_spread / bid) * 100 if bid > 0 else 0
-                        gain_trade = (real_spread / bid) * 100 if bid > 0 else 0
+        if bid and ask:
+            spread = ask - bid
+            tick = calculate_tick(bid)
+            real_spread = spread - (tick * 2)
+            spread_percent = (real_spread / bid) * 100 if bid > 0 else 0
+            gain_trade = (real_spread / bid) * 100 if bid > 0 else 0
 
-                        spread_data.append({
-                            "Ticker": ticker, 
-                            "Bid": bid, 
-                            "Ask": ask, 
-                            "Spread": spread, 
-                            "Real Spread": real_spread, 
-                            "Spread (%)": spread_percent,
-                            "Gain/Trade (%)": gain_trade
-                        })
-
-                    # Random delay between requests to avoid rate-limiting
-                    time.sleep(random.uniform(3, 5))  # Random delay between 3 and 5 seconds
-                    break  # Exit retry loop if successful
-                except Exception as e:
-                    print(f"Error fetching data for {ticker} (Attempt {attempt + 1}): {e}")
-                    if attempt < retries - 1:
-                        # Wait for a longer period before retrying
-                        time.sleep(random.uniform(10, 20))  # Increase sleep for retry attempts
-                    else:
-                        print(f"Failed to fetch data for {ticker} after {retries} attempts.")
-                
-        # Sleep for a longer period after each batch to be more cautious
-        time.sleep(random.uniform(10, 20))  # Longer delay between batches
-
+            spread_data.append({
+                "Ticker": ticker, 
+                "Bid": bid, 
+                "Ask": ask, 
+                "Spread": spread, 
+                "Real Spread": real_spread, 
+                "Spread (%)": spread_percent,
+                "Gain/Trade (%)": gain_trade
+            })
     return pd.DataFrame(spread_data)
 
 # Fetch data initially
